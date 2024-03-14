@@ -14,7 +14,7 @@ export default async function IssueDetailPage({ params }: Props) {
     if (isNaN(numericId) || numericId.toString() !== params.id) notFound();
 
     const issue = await prisma.issue.findUnique({
-        where: { id: parseInt(params.id) },
+        where: { id: numericId },
     });
 
     if (!issue) notFound();
