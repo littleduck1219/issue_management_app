@@ -13,8 +13,7 @@ import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 import dynamic from "next/dynamic";
 import { Issue } from "@prisma/client";
-
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), { ssr: false });
+import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
@@ -77,3 +76,11 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
         </div>
     );
 }
+
+// const SimpleMDE = dynamic(() => import("react-simplemde-editor"), { ssr: false });
+// <Controller
+// defaultValue={issue?.description}
+// name='description'
+// control={control}
+// render={({ field }) => <SimpleMDE placeholder='Description' {...field} />}
+// />
