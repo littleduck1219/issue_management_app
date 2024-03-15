@@ -22,6 +22,7 @@ export default async function IssueDetailPage({ params }: Props) {
         where: { id: numericId },
     });
 
+
     if (!issue) notFound();
 
     return (
@@ -32,7 +33,7 @@ export default async function IssueDetailPage({ params }: Props) {
             {session && (
                 <Box>
                     <Flex direction='column' gap='4'>
-                        <AssignSelect />
+                        <AssignSelect issue={issue} />
                         <EditIssueButton issueId={issue.id} />
                         <DeleteIssueButton issueId={issue.id} />
                     </Flex>
