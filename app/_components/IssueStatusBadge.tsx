@@ -17,6 +17,6 @@ const statusMap: Record<Status, StatusMapType> = {
     CLOSED: { label: "Closed", color: "green" },
 };
 
-export default function IssueStatusBadge({ status }: Props) {
+export default function  IssueStatusBadge({ status }: Props) {
     return <Badge color={statusMap[status].color}>{statusMap[status].label}</Badge>;
 }

@@ -2,38 +2,31 @@
 
 import { Select } from "@radix-ui/themes";
 import React from "react";
-import { User, Issue } from "@prisma/client";
+import { Issue } from "@prisma/client";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 import Skeleton from "@/app/_components/Skeleton";
 import toast, { Toaster } from "react-hot-toast";
+import { useUsers } from "@/app/issues/_lib/query";
 
 export default function AssignSelect({ issue }: { issue: Issue }) {
-    const {
-        data: users,
-        error,
-        isLoading,
-    } = useQuery<User[]>({
-        queryKey: ["users"],
-        queryFn: () => axios.get("/api/users").then((res) => res.data),
-        staleTime: 60 * 1000, // 60초
-        retry: 3,
-    });
+    const { data: users, error, isLoading } = useUsers();
 
     if (isLoading) return <Skeleton />;
     if (error) return null;
+
+    const assignIssue = (userId: string) => {
+        axios
+            .patch("/api/issues/" + issue.id, {
+                assignedToUserId: userId === "unassigned" ? null : userId,
+            })
+            .catch(() => toast.error("Failed to update assigned user"));
+    };
 
     return (
         <>
             <Select.Root
                 defaultValue={issue.assignedToUserId || "unassigned"}
-                onValueChange={(userId) => {
-                    axios
-                        .patch("/api/issues/" + issue.id, {
-                            assignedToUserId: userId === "unassigned" ? null : userId,
-                        })
-                        .catch(() => toast.error("Failed to update assigned user"));
-                }}>
+                onValueChange={assignIssue}>
                 <Select.Trigger placeholder='manager' />
                 <Select.Content>
                     <Select.Group>
