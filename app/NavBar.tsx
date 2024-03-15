@@ -6,16 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { FaTasks } from "react-icons/fa";
+import Skeleton from "react-loading-skeleton";
 
 export default function NavBar() {
-    const currentPath = usePathname();
-    const { status, data: session } = useSession();
-
-    const links = [
-        { label: "Dashboard", href: "/" },
-        { label: "Issues", href: "/issues" },
-    ];
-
     return (
         <nav className='py-3 space-x-6 border-b mb-5 px-5 h-14'>
             <Container>
@@ -24,47 +17,68 @@ export default function NavBar() {
                         <Link href='/'>
                             <FaTasks />
                         </Link>
-                        <ul className='flex space-x-6'>
-                            {links.map((link) => (
-                                <Link
-                                    className={`${
-                                        link.href === currentPath
-                                            ? "text-zinc-900"
-                                            : " text-zinc-500"
-                                    } hover:text-zinc-800 transition-colors`}
-                                    key={link.href}
-                                    href={link.href}>
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </ul>
+                        <NavLinks />
                     </Flex>
-                    <Box>
-                        {status === "authenticated" && (
-                            <DropdownMenu.Root>
-                                <DropdownMenu.Trigger>
-                                    <Avatar
-                                        src={session.user!.image!}
-                                        fallback='?'
-                                        size='2'
-                                        radius='full'
-                                        className='cursor-pointer'
-                                    />
-                                </DropdownMenu.Trigger>
-                                <DropdownMenu.Content>
-                                    <DropdownMenu.Label>
-                                        <Text size='2'>{session.user?.name}</Text>
-                                    </DropdownMenu.Label>
-                                    <DropdownMenu.Item>
-                                        <Link href='/api/auth/signout'>Logout</Link>
-                                    </DropdownMenu.Item>
-                                </DropdownMenu.Content>
-                            </DropdownMenu.Root>
-                        )}
-                        {status === "unauthenticated" && <Link href='api/auth/signin'>Login</Link>}
-                    </Box>
+                    <AuthStatus />
                 </Flex>
             </Container>
         </nav>
+    );
+}
+
+export function NavLinks() {
+    const currentPath = usePathname();
+    const links = [
+        { label: "Dashboard", href: "/" },
+        { label: "Issues", href: "/issues" },
+    ];
+
+    return (
+        <ul className='flex space-x-6'>
+            {links.map((link) => (
+                <Link
+                    className={`${
+                        link.href === currentPath ? "text-zinc-900" : " text-zinc-500"
+                    } hover:text-zinc-800 transition-colors`}
+                    key={link.href}
+                    href={link.href}>
+                    {link.label}
+                </Link>
+            ))}
+        </ul>
+    );
+}
+
+export function AuthStatus() {
+    const { status, data: session } = useSession();
+
+    if (status === "loading") return <Skeleton width='3rem' />;
+    if (status === "unauthenticated") return <Link href='/api/auth/signin'>Login</Link>;
+
+    return (
+        <Box>
+            {status === "authenticated" && (
+                <DropdownMenu.Root>
+                    <DropdownMenu.Trigger>
+                        <Avatar
+                            src={session!.user!.image!}
+                            fallback='?'
+                            size='2'
+                            radius='full'
+                            className='cursor-pointer'
+                            referrerPolicy='no-referrer'
+                        />
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content>
+                        <DropdownMenu.Label>
+                            <Text size='2'>{session!.user!.name}</Text>
+                        </DropdownMenu.Label>
+                        <DropdownMenu.Item>
+                            <Link href='/api/auth/signout'>Logout</Link>
+                        </DropdownMenu.Item>
+                    </DropdownMenu.Content>
+                </DropdownMenu.Root>
+            )}
+        </Box>
     );
 }

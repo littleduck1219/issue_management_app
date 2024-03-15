@@ -9,8 +9,8 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { issueSchema } from "@/app/validationSchemas";
 import { z } from "zod";
-import ErrorMessage from "@/app/components/ErrorMessage";
-import Spinner from "@/app/components/Spinner";
+import ErrorMessage from "@/app/_components/ErrorMessage";
+import Spinner from "@/app/_components/Spinner";
 import { Issue } from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
 

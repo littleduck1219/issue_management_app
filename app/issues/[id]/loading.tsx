@@ -1,7 +1,6 @@
-import Skeleton from "@/app/components/Skeleton";
+import Skeleton from "@/app/_components/Skeleton";
 import { Flex, Heading, Text, Card, Box } from "@radix-ui/themes";
 import React from "react";
-
 
 export default function LoadingIIssueDetailPage() {
     return (
