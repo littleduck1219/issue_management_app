@@ -1,7 +1,7 @@
 import { Flex, Button } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
-import IssueStatusFilter from "./list/IssueStatusFilter";
+import IssueStatusFilter from "./IssueStatusFilter";
 
 export default function IssueActions() {
     return (
