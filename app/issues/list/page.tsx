@@ -1,7 +1,7 @@
 import React from "react";
 import prisma from "@/prisma/client";
 import IssueActions from "@/app/issues/list/IssueActions";
-import { Status, Issue } from "@prisma/client";
+import { Status } from "@prisma/client";
 import PageNation from "@/app/_components/PageNation";
 import IssueTable, { IssueQuery, columnNames } from "@/app/issues/list/IssueTable";
 import { Flex } from "@radix-ui/themes";
@@ -11,8 +11,6 @@ interface Props {
 }
 
 export default async function IssuesPage({ searchParams }: Props) {
-
-
     const statuses = Object.values(Status);
     const status = statuses.includes(searchParams.status) ? searchParams.status : undefined;
     const orderBy = columnNames.includes(searchParams.orderBy)
@@ -21,7 +19,7 @@ export default async function IssuesPage({ searchParams }: Props) {
 
     const where = { status };
 
-    const page = parseInt(searchParams.pa ge) || 1;
+    const page = parseInt(searchParams.page) || 1;
     const pageSize = 10;
     const issues = await prisma.issue.findMany({
         where: { status },
@@ -33,7 +31,7 @@ export default async function IssuesPage({ searchParams }: Props) {
     const issueCount = await prisma.issue.count({ where });
 
     return (
-        <Flex direction="column" gap="3">
+        <Flex direction='column' gap='3'>
             <IssueActions />
             <IssueTable searchParams={searchParams} issues={issues} />
             <PageNation pageSize={pageSize} itemCount={issueCount} currentPage={page} />
