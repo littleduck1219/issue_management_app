@@ -1,4 +1,4 @@
-import React from "react";
+import React, { cache } from "react";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 import { Box, Flex, Grid } from "@radix-ui/themes";
@@ -8,20 +8,19 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/auth/authOption";
 import AssignSelect from "../_components/AssignSelect";
-import { Metadata } from "next";
 
 interface Props {
     params: { id: string };
 }
+
+const fetchUser = cache((issueId: number) => prisma.issue.findUnique({ where: { id: issueId } }));
 
 export default async function IssueDetailPage({ params }: Props) {
     const session = await getServerSession(authOptions);
     const numericId = parseInt(params.id, 10);
     if (isNaN(numericId) || numericId.toString() !== params.id) notFound();
 
-    const issue = await prisma.issue.findUnique({
-        where: { id: numericId },
-    });
+    const issue = await fetchUser(parseInt(params.id));
 
     if (!issue) notFound();
 
@@ -44,10 +43,7 @@ export default async function IssueDetailPage({ params }: Props) {
 }
 
 export async function generateMetadata({ params }: Props) {
-    const issue = await prisma.issue.findUnique({
-        where: { id: parseInt(params.id, 10) },
-    });
-
+    const issue = await fetchUser(parseInt(params.id));
     return {
         title: `Work Manager - ${issue?.title}`,
         description: "Detail of Work: " + issue?.description,
