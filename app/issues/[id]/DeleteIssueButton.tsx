@@ -27,23 +27,27 @@ export default function DeleteIssueButton({ issueId }: { issueId: number }) {
         <>
             <AlertDialog.Root>
                 <AlertDialog.Trigger>
-                    <Button color='red' disabled={isDeleting}>
+                    <button
+                        className='bg-red-500 rounded-md py-2 text-white text-xs font-bold'
+                        disabled={isDeleting}>
                         Delete Issue {isDeleting && <Spinner />}
-                    </Button>
+                    </button>
                 </AlertDialog.Trigger>
                 <AlertDialog.Content>
                     <AlertDialog.Title>Confirm Deletion</AlertDialog.Title>
                     <AlertDialog.Description>want to delete issue?</AlertDialog.Description>
                     <Flex mt='4' gap='3'>
                         <AlertDialog.Cancel>
-                            <Button variant='soft' color='gray'>
+                            <button className='bg-white border border-gray-500 rounded-md px-4'>
                                 Cancel
-                            </Button>
+                            </button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action>
-                            <Button onClick={onDelete} color='red'>
+                            <button
+                                className='bg-red-500 rounded-md px-2 text-white text-xs font-bold'
+                                onClick={onDelete}>
                                 Delete
-                            </Button>
+                            </button>
                         </AlertDialog.Action>
                     </Flex>
                 </AlertDialog.Content>
@@ -52,9 +56,11 @@ export default function DeleteIssueButton({ issueId }: { issueId: number }) {
                 <AlertDialog.Content>
                     <AlertDialog.Title>Error</AlertDialog.Title>
                     <AlertDialog.Description>Something went wrong</AlertDialog.Description>
-                    <Button color='gray' variant='soft' mt='2' onClick={() => setError(false)}>
+                    <button
+                        className='mt-2 bg-gray-200 border border-gray-300 rounded-md px-3 py-1 text-sm'
+                        onClick={() => setError(false)}>
                         ok
-                    </Button>
+                    </button>
                 </AlertDialog.Content>
             </AlertDialog.Root>
         </>
