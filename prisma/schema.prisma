@@ -96,14 +96,14 @@ model Widget {
 }
 
 model Issue {
-  id               BigInt      @id @default(autoincrement())
-  title            String
-  description      String
-  status           Status      @default(OPEN)
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  assignedToUserId String?
-  assignedToUser   User?       @relation(fields: [assignedToUserId], references: [id])
+  id               Int      @id @default(sequence())
+  title            String   @db.String
+  description      String   @db.String
+  status           Status   @default(OPEN)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  assignedToUserId String?  @db.String
+  assignedToUser   User?    @relation(fields: [assignedToUserId], references: [id])
 }
 
 enum Status {

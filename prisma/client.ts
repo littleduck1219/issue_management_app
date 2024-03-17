@@ -27,16 +27,32 @@
 
 // export default prismaClientSingleton();
 
-const { PrismaClient } = require("@prisma/client");
+// const { PrismaClient } = require("@prisma/client");
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
-(async () => {
-    try {
-        console.log(await prisma.widget.create({ data: {} }));
-    } catch (err) {
-        console.error("error executing query:", err);
-    } finally {
-        prisma.$disconnect();
+// (async () => {
+//     try {
+//         console.log(await prisma.widget.create({ data: {} }));
+//     } catch (err) {
+//         console.error("error executing query:", err);
+//     } finally {
+//         prisma.$disconnect();
+//     }
+// })();
+
+// prisma/client.ts 파일
+
+import { PrismaClient } from "@prisma/client";
+
+let prisma: PrismaClient;
+
+const prismaClientSingleton = () => {
+    if (!prisma) {
+        prisma = new PrismaClient({ log: ["query"] });
     }
-})();
+    return prisma;
+};
+
+export default prismaClientSingleton();
+export { prisma };
