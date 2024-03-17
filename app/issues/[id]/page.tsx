@@ -1,5 +1,5 @@
 import React, { cache } from "react";
-import prisma from "@/prisma/client";
+import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import EditIssueButton from "./EditIssueButton";

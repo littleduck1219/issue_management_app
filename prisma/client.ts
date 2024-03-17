@@ -53,6 +53,5 @@ const prismaClientSingleton = () => {
     }
     return prisma;
 };
-
-export default prismaClientSingleton();
+prismaClientSingleton();
 export { prisma };
