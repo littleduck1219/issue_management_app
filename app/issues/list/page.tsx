@@ -5,6 +5,7 @@ import { Status } from "@prisma/client";
 import PageNation from "@/app/_components/PageNation";
 import IssueTable, { IssueQuery, columnNames } from "@/app/issues/list/IssueTable";
 import { Flex } from "@radix-ui/themes";
+import { Metadata } from "next";
 
 interface Props {
     searchParams: IssueQuery;
@@ -40,3 +41,8 @@ export default async function IssuesPage({ searchParams }: Props) {
 }
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+    title: "Work Manager - Work List",
+    description: "Can check all works.",
+};

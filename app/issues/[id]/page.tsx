@@ -8,6 +8,7 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/auth/authOption";
 import AssignSelect from "../_components/AssignSelect";
+import { Metadata } from "next";
 
 interface Props {
     params: { id: string };
@@ -21,7 +22,6 @@ export default async function IssueDetailPage({ params }: Props) {
     const issue = await prisma.issue.findUnique({
         where: { id: numericId },
     });
-
 
     if (!issue) notFound();
 
@@ -41,4 +41,15 @@ export default async function IssueDetailPage({ params }: Props) {
             )}
         </Grid>
     );
+}
+
+export async function generateMetadata({ params }: Props) {
+    const issue = await prisma.issue.findUnique({
+        where: { id: parseInt(params.id, 10) },
+    });
+
+    return {
+        title: `Work Manager - ${issue?.title}`,
+        description: "Detail of Work: " + issue?.description,
+    };
 }
