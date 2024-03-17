@@ -1,7 +1,5 @@
-import Image from "next/image";
-import NavBar from "./NavBar";
-import PageNation from "@/app/_components/Pagenation";
+import PageNation from "@/app/_components/PageNation";
 
-export default function Home() {
-    return <PageNation itemCount={100} pageSize={10} currentPage={2}></PageNation>;
+export default function Home({ searchParams }: { searchParams: { page: string } }) {
+    return <PageNation itemCount={100} pageSize={10} currentPage={parseInt(searchParams.page)} />;
 }
