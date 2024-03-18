@@ -20,4 +20,15 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
+    cookies: {
+        sessionToken: {
+            name: `next-auth.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: "Strict",
+                path: "/",
+                secure: true,
+            },
+        },
+    },
 };
