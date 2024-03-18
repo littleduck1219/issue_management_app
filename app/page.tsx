@@ -6,9 +6,10 @@ import LatestIssues from "./LatestIssues";
 import { Metadata } from "next";
 
 export default async function Home({ searchParams }: { searchParams: { page: string } }) {
-    const open = await prisma.issue.count({ where: { status: "OPEN" } });
-    const inProgress = await prisma.issue.count({ where: { status: "IN_PROGRESS" } });
-    const closed = await prisma.issue.count({ where: { status: "CLOSED" } });
+    const issuesData = await prisma.issue.findMany();
+    const open = issuesData.filter((issue) => issue.status === "OPEN").length;
+    const inProgress = issuesData.filter((issue) => issue.status === "IN_PROGRESS").length;
+    const closed = issuesData.filter((issue) => issue.status === "CLOSED").length;
 
     return (
         <Grid columns={{ initial: "1", md: "2" }} gap='5'>
