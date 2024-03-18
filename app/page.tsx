@@ -1,3 +1,5 @@
+"use client";
+
 import prisma from "@/prisma/client";
 import { Issue } from "@prisma/client";
 import IssueSummary from "./IssueSummary";
@@ -7,7 +9,7 @@ import LatestIssues from "./LatestIssues";
 import { Metadata } from "next";
 import { useEffect, useState } from "react";
 
-export default async function Home({ searchParams }: { searchParams: { page: string } }) {
+export default function Home({ searchParams }: { searchParams: { page: string } }) {
     const [issuesData, setIssuesData] = useState<Issue[]>([]);
 
     useEffect(() => {
