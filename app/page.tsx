@@ -37,7 +37,7 @@ export default function Home({ searchParams }: { searchParams: { page: string } 
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-    title: "Work Manager - Dashboard",
-    description: "Can check work status and latest issues.",
-};
+// export const metadata: Metadata = {
+//     title: "Work Manager - Dashboard",
+//     description: "Can check work status and latest issues.",
+// };
