@@ -1,4 +1,4 @@
-import {prisma} from "@/prisma/client";
+import prisma from "@/prisma/client";
 import IssueSummary from "./IssueSummary";
 import IssueChart from "./IssueChart";
 import { Flex, Grid } from "@radix-ui/themes";

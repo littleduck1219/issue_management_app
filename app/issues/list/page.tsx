@@ -1,5 +1,5 @@
 import React from "react";
-import { prisma } from "@/prisma/client";
+import prisma from "@/prisma/client";
 import IssueActions from "@/app/issues/list/IssueActions";
 import { Status } from "@prisma/client";
 import PageNation from "@/app/_components/PageNation";
