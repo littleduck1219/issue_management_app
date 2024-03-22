@@ -8,8 +8,9 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import AssignSelect from "../../_components/AssignSelect";
+import AssignSelect from "@/app/issues/_components/AssignSelect";
 import Loading from "../loading";
+import StatusSelect from "./StatusSelect";
 
 interface Props {
     params: { id: string };
@@ -24,6 +25,7 @@ export default function IssueDetail({ params }: Props) {
             const response = await axios.get(`/api/issues/${params.id}`);
             return response.data;
         },
+        staleTime: 0,
     });
 
     if (isLoading) return <Loading />;
@@ -40,6 +42,7 @@ export default function IssueDetail({ params }: Props) {
                             <AssignSelect issue={issue} />
                             <EditIssueButton issueId={issue.id} />
                             <DeleteIssueButton issueId={issue.id} />
+                            <StatusSelect issue={issue} />
                         </Flex>
                     </Box>
                 )}

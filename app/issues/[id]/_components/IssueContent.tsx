@@ -5,8 +5,6 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 
 export default function IssueContent({ issue }: { issue: Issue }) {
-    console.log(issue);
-
     return (
         <>
             <Heading>{issue.title}</Heading>

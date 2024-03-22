@@ -1,6 +1,7 @@
 import { Status } from "@prisma/client";
 import { Badge } from "@radix-ui/themes";
 import React from "react";
+import { useStatus } from "../_lib/store/useStatus";
 
 interface Props {
     status: Status;
@@ -17,6 +18,8 @@ const statusMap: Record<Status, StatusMapType> = {
     CLOSED: { label: "Closed", color: "green" },
 };
 
-export default function  IssueStatusBadge({ status }: Props) {
-    return <Badge color={statusMap[status].color}>{statusMap[status].label}</Badge>;
+export default function IssueStatusBadge({ status }: Props) {
+    return status ? (
+        <Badge color={statusMap[status]?.color}>{statusMap[status]?.label}</Badge>
+    ) : null;
 }
