@@ -1,6 +1,6 @@
 "use client";
 
-import { Select } from "@radix-ui/themes";
+import { Avatar, Flex, Select } from "@radix-ui/themes";
 import React from "react";
 import { Issue } from "@prisma/client";
 import axios from "axios";
@@ -34,7 +34,15 @@ export default function AssignSelect({ issue }: { issue: Issue }) {
                         <Select.Item value='unassigned'>Not Selected Assigned</Select.Item>
                         {users?.map((user) => (
                             <Select.Item key={user.id} value={user.id}>
-                                {user.name}
+                                <Flex gap='3'>
+                                    <Avatar
+                                        src={user.image || undefined}
+                                        fallback='?'
+                                        size='1'
+                                        radius='full'
+                                    />
+                                    {user.name}
+                                </Flex>
                             </Select.Item>
                         ))}
                     </Select.Group>

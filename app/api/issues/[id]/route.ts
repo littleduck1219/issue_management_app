@@ -5,6 +5,11 @@ import delay from "delay";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/auth/authOption";
 
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+    const issue = await prisma.issue.findUnique({ where: { id: parseInt(params.id) } });
+    return NextResponse.json(issue);
+}
+
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
     console.log(session);
@@ -32,6 +37,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     const issue = await prisma.issue.findUnique({
         where: { id: parseInt(params.id) },
     });
+
     if (!issue) {
         return NextResponse.json({ error: "Issue not found" }, { status: 404 });
     }
