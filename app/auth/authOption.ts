@@ -4,6 +4,16 @@ import prisma from "@/prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
+    callbacks: {
+        jwt({ token }) {
+            console.log("auth.ts jwt", token);
+            return token;
+        },
+        session({ session, newSession, user }) {
+            console.log("auth.ts session", session, newSession, user);
+            return session;
+        },
+    },
     adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
