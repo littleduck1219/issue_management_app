@@ -13,7 +13,7 @@ export default function NavBar() {
             <Container>
                 <Flex justify='between'>
                     <Flex align='center' gap='3'>
-                        <Link href='/home'>
+                        <Link href='/'>
                             <FaTasks />
                         </Link>
                         <NavLinks />
