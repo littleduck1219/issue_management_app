@@ -4,6 +4,10 @@ import prisma from "@/prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
+
+    pages: {
+        signIn: "/flow/login",
+    },
     callbacks: {
         jwt({ token }) {
             console.log("auth.ts jwt", token);

@@ -1,5 +1,5 @@
 import { Avatar, Text, Box, DropdownMenu } from "@radix-ui/themes";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 
@@ -28,7 +28,8 @@ export function AuthStatus() {
                             <Text size='2'>{session!.user!.name}</Text>
                         </DropdownMenu.Label>
                         <DropdownMenu.Item>
-                            <Link href='/api/auth/signout'>Logout</Link>
+                            {/* <Link href='/api/auth/signout'>Logout</Link> */}
+                            <button onClick={() => signOut()}>Logout</button>
                         </DropdownMenu.Item>
                     </DropdownMenu.Content>
                 </DropdownMenu.Root>

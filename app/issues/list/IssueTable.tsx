@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "@radix-ui/themes";
+import { Avatar, Table } from "@radix-ui/themes";
 import NextLink from "next/link";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
 import { IssueStatusBadge, Link } from "@/app/_components";
@@ -13,7 +13,22 @@ export interface IssueQuery {
 
 interface Props {
     searchParams: IssueQuery;
-    issues: Issue[];
+    issues: {
+        assignedToUser: {
+            id: string;
+            name: string | null;
+            email: string | null;
+            emailVerified: Date | null;
+            image: string | null;
+        } | null;
+        id: number;
+        title: string;
+        description: string;
+        status: Status;
+        createdAt: Date;
+        updatedAt: Date;
+        assignedToUserId: string | null;
+    }[];
 }
 
 export default function IssueTable({ searchParams, issues }: Props) {
@@ -51,6 +66,18 @@ export default function IssueTable({ searchParams, issues }: Props) {
                         <Table.Cell className='hidden md:table-cell'>
                             {issue.createdAt.toLocaleDateString()}
                         </Table.Cell>
+                        {issue.assignedToUser ? (
+                            <Table.Cell>
+                                <Avatar
+                                    src={issue.assignedToUser?.image!}
+                                    fallback='?'
+                                    size='1'
+                                    radius='full'
+                                />
+                            </Table.Cell>
+                        ) : (
+                            <Table.Cell></Table.Cell>
+                        )}
                     </Table.Row>
                 ))}
             </Table.Body>
@@ -62,6 +89,7 @@ const columns: { label: string; value: keyof Issue; className?: string }[] = [
     { label: "Issue", value: "title" },
     { label: "Status", value: "status", className: "hidden md:table-cell" },
     { label: "CreatedAt", value: "createdAt", className: "hidden md:table-cell" },
+    { label: "Assign", value: "assignedToUserId", className: "hidden md:table-cell" },
 ];
 
 export const columnNames = columns.map((column) => column.value);
