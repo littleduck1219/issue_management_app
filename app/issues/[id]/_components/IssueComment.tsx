@@ -39,7 +39,7 @@ export default function IssueComment({ issueId }: Props) {
                         </Box>
                         <Box className='w-100 flex-1'>
                             <div>{comment?.userName}</div>
-                            <Card>
+                            <Card className='prose max-w-full'>
                                 <ReactMarkdown>{comment?.comment}</ReactMarkdown>
                             </Card>
                         </Box>
