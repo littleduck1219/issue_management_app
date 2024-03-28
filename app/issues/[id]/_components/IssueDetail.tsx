@@ -141,11 +141,8 @@ export default function IssueDetail({ params }: Props) {
                                         />
                                         <Flex justify='end' direction='row' gap='4'>
                                             <StatusSelect issue={issue} />
-                                            <Button
-                                                disabled={isSubmitting}
-                                                type='submit'
-                                                onClick={onSubmit}>
-                                                Comment{isSubmitting && <Spinner />}
+                                            <Button disabled={isSubmitting}>
+                                                Comment {isSubmitting && <Spinner />}
                                             </Button>
                                         </Flex>
                                     </Box>
