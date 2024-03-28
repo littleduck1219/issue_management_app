@@ -3,13 +3,19 @@ import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/auth/authOption";
-import IssueDetail from "./_components/IssueDetail";
+import dynamic from "next/dynamic";
+import Loading from "./loading";
 
 interface Props {
     params: { id: string };
 }
 
 const fetchUser = cache((issueId: number) => prisma.issue.findUnique({ where: { id: issueId } }));
+
+const IssueDetail = dynamic(() => import("./_components/IssueDetail"), {
+    ssr: false,
+    loading: () => <Loading />,
+});
 
 export default async function IssueDetailPage({ params }: Props) {
     const session = await getServerSession(authOptions);

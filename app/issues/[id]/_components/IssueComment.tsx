@@ -12,15 +12,13 @@ interface Props {
 
 export default function IssueComment({ issueId }: Props) {
     const { data: comments, isLoading } = useQuery({
-        queryKey: ["issue", "comment"],
+        queryKey: ["issue", "comment", issueId],
         queryFn: async () => {
             const response = await axios.get(`/api/issues/${issueId}/comment`);
             return response.data;
         },
         staleTime: 0,
     });
-
-    console.log(comments);
 
     if (isLoading) return <Spinner />;
 

@@ -23,11 +23,11 @@ model Issue {
   assignedToUserId String?        @db.VarChar(255)
   assignedToUser   User?          @relation(name: "assign", fields: [assignedToUserId], references: [id])
   issueComments    IssueComment[]
+  userId           String
 
-  userId        String
-  createdByUser User   @relation(name: "createdByUser", fields: [userId], references: [id], onDelete: Cascade)
+  createdByUser User @relation(name: "createdByUser", fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  // @@index([userId])
 }
 
 enum Status {
@@ -97,6 +97,6 @@ model IssueComment {
   user  User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
 
-  @@index([issueId])
-  @@index([userId])
+  // @@index([issueId])
+  // @@index([userId])
 }

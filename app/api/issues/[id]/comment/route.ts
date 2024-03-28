@@ -25,8 +25,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     const customSession: CustomSession = session?.user ? { user: session?.user } : {};
     const userId = customSession?.user?.id || "";
 
-    console.log("customSession", customSession);
-
     if (!session) {
         return NextResponse.json({}, { status: 401 });
     }

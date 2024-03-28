@@ -76,9 +76,6 @@ CREATE TABLE "IssueComment" (
 );
 
 -- CreateIndex
-CREATE INDEX "Issue_userId_idx" ON "Issue"("userId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Account_userId_key" ON "Account"("userId");
 
 -- CreateIndex
@@ -95,12 +92,6 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
-
--- CreateIndex
-CREATE INDEX "IssueComment_issueId_idx" ON "IssueComment"("issueId");
-
--- CreateIndex
-CREATE INDEX "IssueComment_userId_idx" ON "IssueComment"("userId");
 
 -- AddForeignKey
 ALTER TABLE "Issue" ADD CONSTRAINT "Issue_assignedToUserId_fkey" FOREIGN KEY ("assignedToUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

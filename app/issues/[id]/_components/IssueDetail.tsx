@@ -48,7 +48,7 @@ export default function IssueDetail({ params }: Props) {
     const userId = customSession?.user?.id || "";
 
     const { data: issue, isLoading } = useQuery({
-        queryKey: ["issue"],
+        queryKey: ["issue", params.id],
         queryFn: async () => {
             const response = await axios.get(`/api/issues/${params.id}`);
             return response.data;
@@ -69,10 +69,6 @@ export default function IssueDetail({ params }: Props) {
             setSubmitting(false);
         },
     });
-
-    console.log("issue", issue?.userId);
-
-    console.log("session", userId);
 
     const {
         register,
@@ -116,7 +112,7 @@ export default function IssueDetail({ params }: Props) {
                         </>
                     )}
                 </Flex>
-                <IssueComment issueId={issue.id} />
+                <IssueComment issueId={issue?.id} />
                 {session && (
                     <>
                         <form onSubmit={onSubmit}>
@@ -163,3 +159,5 @@ export default function IssueDetail({ params }: Props) {
         </>
     );
 }
+
+export const dynamic = "force-dynamic";
