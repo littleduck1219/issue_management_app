@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
-import LoginModal from "@/app/_components/LoginModal";
+import React, { Children } from "react";
 import RedirectToLogin from "./_components/RedirectToLogin";
 
-export default function page() {
+export default function LoginPage() {
     return (
         <>
             <RedirectToLogin />
+
         </>
     );
 }

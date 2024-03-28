@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/auth/authOption";
 import dynamic from "next/dynamic";
 import Loading from "./loading";
+import RedirectToLogin from "@/app/flow/login/_components/RedirectToLogin";
 
 interface Props {
     params: { id: string };
@@ -26,7 +27,12 @@ export default async function IssueDetailPage({ params }: Props) {
 
     if (!issue) notFound();
 
-    return <IssueDetail params={params} />;
+    return (
+        <>
+            <RedirectToLogin />
+            <IssueDetail params={params} />
+        </>
+    );
 }
 
 export async function generateMetadata({ params }: Props) {
