@@ -24,26 +24,30 @@ export default function IssueComment({ issueId }: Props) {
 
     return (
         <>
-            {comments?.map((comment: CommentType) => (
-                <Flex gap='4' key={comment.id}>
-                    <Box>
-                        <Avatar
-                            src={comment?.userImage!}
-                            fallback='?'
-                            size='2'
-                            radius='full'
-                            className='cursor-pointer'
-                            referrerPolicy='no-referrer'
-                        />
-                    </Box>
-                    <Box className='w-100 flex-1    '>
-                        <div>{comment?.userName}</div>
-                        <Card>
-                            <ReactMarkdown>{comment?.comment}</ReactMarkdown>
-                        </Card>
-                    </Box>
-                </Flex>
-            ))}
+            {comments ? (
+                comments.map((comment: CommentType) => (
+                    <Flex gap='4' key={comment.id}>
+                        <Box>
+                            <Avatar
+                                src={comment?.userImage!}
+                                fallback='?'
+                                size='2'
+                                radius='full'
+                                className='cursor-pointer'
+                                referrerPolicy='no-referrer'
+                            />
+                        </Box>
+                        <Box className='w-100 flex-1'>
+                            <div>{comment?.userName}</div>
+                            <Card>
+                                <ReactMarkdown>{comment?.comment}</ReactMarkdown>
+                            </Card>
+                        </Box>
+                    </Flex>
+                ))
+            ) : (
+                <div></div>
+            )}
         </>
     );
 }
