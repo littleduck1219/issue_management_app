@@ -10,7 +10,7 @@ CREATE TABLE "Issue" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "assignedToUserId" VARCHAR(255),
-    "userId" VARCHAR(255) NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Issue_pkey" PRIMARY KEY ("id")
 );
@@ -64,14 +64,19 @@ CREATE TABLE "VerificationToken" (
 -- CreateTable
 CREATE TABLE "IssueComment" (
     "id" SERIAL NOT NULL,
+    "userName" TEXT,
+    "userImage" TEXT,
     "issueId" INTEGER NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" TEXT,
     "comment" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "IssueComment_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE INDEX "Issue_userId_idx" ON "Issue"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_userId_key" ON "Account"("userId");
@@ -99,6 +104,9 @@ CREATE INDEX "IssueComment_userId_idx" ON "IssueComment"("userId");
 
 -- AddForeignKey
 ALTER TABLE "Issue" ADD CONSTRAINT "Issue_assignedToUserId_fkey" FOREIGN KEY ("assignedToUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Issue" ADD CONSTRAINT "Issue_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Spinner } from "@/app/_components";
 import { IssueComment as CommentType } from "@prisma/client";
+import ReactMarkdown from "react-markdown";
 
 interface Props {
     issueId: string;
@@ -40,7 +41,7 @@ export default function IssueComment({ issueId }: Props) {
                     <Box className='w-100 flex-1    '>
                         <div>{comment?.userName}</div>
                         <Card>
-                            <div>{comment?.comment}</div>
+                            <ReactMarkdown>{comment?.comment}</ReactMarkdown>
                         </Card>
                     </Box>
                 </Flex>

@@ -44,6 +44,8 @@ export default function IssueDetail({ params }: Props) {
     const queryClient = useQueryClient();
     const [isSubmitting, setSubmitting] = useState(false);
     const { data: session, status } = useSession();
+    const customSession: CustomSession = status === "authenticated" ? { user: session?.user } : {};
+    const userId = customSession?.user?.id || "";
 
     const { data: issue, isLoading } = useQuery({
         queryKey: ["issue"],
@@ -67,6 +69,10 @@ export default function IssueDetail({ params }: Props) {
             setSubmitting(false);
         },
     });
+
+    console.log("issue", issue?.userId);
+
+    console.log("session", userId);
 
     const {
         register,
@@ -96,7 +102,7 @@ export default function IssueDetail({ params }: Props) {
                     <Box className='flex-1'>
                         <IssueContent issue={issue} />
                     </Box>
-                    {session && (
+                    {issue?.userId === userId && (
                         <>
                             <Flex direction='column' justify='end'>
                                 <Box>
@@ -140,7 +146,9 @@ export default function IssueDetail({ params }: Props) {
                                             )}
                                         />
                                         <Flex justify='end' direction='row' gap='4'>
-                                            <StatusSelect issue={issue} />
+                                            {issue?.userId === userId && (
+                                                <StatusSelect issue={issue} />
+                                            )}
                                             <Button disabled={isSubmitting}>
                                                 Comment {isSubmitting && <Spinner />}
                                             </Button>
