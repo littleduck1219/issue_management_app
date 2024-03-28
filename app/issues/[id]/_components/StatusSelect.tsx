@@ -23,7 +23,6 @@ export default function StatusSelect({ issue }: { issue: Issue }) {
         },
 
         onSuccess: (data, variables) => {
-            stateStatue.setStatus(variables);
             console.log(variables);
             queryClient.invalidateQueries({ queryKey: ["issue"] });
         },

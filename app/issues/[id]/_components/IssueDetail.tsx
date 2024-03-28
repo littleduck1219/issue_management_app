@@ -1,23 +1,49 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Box, Flex, Grid } from "@radix-ui/themes";
+import React, { useMemo, useState } from "react";
+import { Avatar, Box, Button, Flex, Grid } from "@radix-ui/themes";
 import EditIssueButton from "./EditIssueButton";
 import IssueContent from "./IssueContent";
 import DeleteIssueButton from "./DeleteIssueButton";
 import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import AssignSelect from "@/app/issues/_components/AssignSelect";
 import Loading from "../loading";
 import StatusSelect from "./StatusSelect";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { issueCommentSchema } from "@/app/validationSchemas";
+import { z } from "zod";
+import { Spinner } from "@/app/_components";
+import { IssueComment as CommentType } from "@prisma/client";
+import IssueComment from "./IssueComment";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
     params: { id: string };
 }
 
+interface CustomSession {
+    user?: {
+        id?: string;
+        name?: string | null | undefined;
+        email?: string | null | undefined;
+        image?: string | null | undefined;
+    };
+}
+
+interface Comment {
+    comment: string;
+}
+
+type IssueFormData = z.infer<typeof issueCommentSchema>;
+
 export default function IssueDetail({ params }: Props) {
-    const { data: session } = useSession();
+    const queryClient = useQueryClient();
+    const [isSubmitting, setSubmitting] = useState(false);
+    const { data: session, status } = useSession();
 
     const { data: issue, isLoading } = useQuery({
         queryKey: ["issue"],
@@ -28,25 +54,107 @@ export default function IssueDetail({ params }: Props) {
         staleTime: 0,
     });
 
+    const commentUpdate = useMutation<Comment, unknown, Comment>({
+        mutationKey: ["issue", "comment"],
+        mutationFn: async (comment) => {
+            return axios.post(`/api/issues/${issue.id}/comment`, comment);
+        },
+        onSuccess: async (data, variables) => {
+            setSubmitting(false);
+            await queryClient.invalidateQueries({ queryKey: ["issue", "comment"] });
+        },
+        onError: (error) => {
+            setSubmitting(false);
+        },
+    });
+
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<IssueFormData>({ resolver: zodResolver(issueCommentSchema) });
+
+    const simpleMDEOptions = useMemo(() => {
+        return {
+            autofocus: true,
+            spellChecker: false,
+        };
+    }, []);
+
+    const onSubmit = handleSubmit(async (data: Comment) => {
+        setSubmitting(true);
+        await commentUpdate.mutate(data);
+    });
+
     if (isLoading) return <Loading />;
 
     return (
         <>
-            <Grid columns={{ initial: "1", md: "5" }} gap='5'>
-                <Box className='md:col-span-4'>
-                    <IssueContent issue={issue} />
-                </Box>
-                {session && (
-                    <Box>
-                        <Flex direction='column' gap='4'>
-                            <AssignSelect issue={issue} />
-                            <EditIssueButton issueId={issue.id} />
-                            <DeleteIssueButton issueId={issue.id} />
-                            <StatusSelect issue={issue} />
-                        </Flex>
+            <Flex direction='column' gap='5'>
+                <Flex gap='5'>
+                    <Box className='flex-1'>
+                        <IssueContent issue={issue} />
                     </Box>
+                    {session && (
+                        <>
+                            <Flex direction='column' justify='end'>
+                                <Box>
+                                    <Flex direction='column' gap='4'>
+                                        <AssignSelect issue={issue} />
+                                        <EditIssueButton issueId={issue.id} />
+                                        <DeleteIssueButton issueId={issue.id} />
+                                    </Flex>
+                                </Box>
+                            </Flex>
+                        </>
+                    )}
+                </Flex>
+                <IssueComment issueId={issue.id} />
+                {session && (
+                    <>
+                        <form onSubmit={onSubmit}>
+                            <Flex gap='4'>
+                                <Box>
+                                    <Avatar
+                                        src={session!.user!.image!}
+                                        fallback='?'
+                                        size='2'
+                                        radius='full'
+                                        className='cursor-pointer'
+                                        referrerPolicy='no-referrer'
+                                    />
+                                </Box>
+                                <Flex direction='column' className='flex-1 h-7'>
+                                    <div className='font-bold'>Comment</div>
+                                    <Box className='flex-1 h-7'>
+                                        <Controller
+                                            name='comment'
+                                            control={control}
+                                            render={({ field }) => (
+                                                <SimpleMDE
+                                                    placeholder='Comment'
+                                                    {...field}
+                                                    options={simpleMDEOptions}
+                                                />
+                                            )}
+                                        />
+                                        <Flex justify='end' direction='row' gap='4'>
+                                            <StatusSelect issue={issue} />
+                                            <Button
+                                                disabled={isSubmitting}
+                                                type='submit'
+                                                onClick={onSubmit}>
+                                                Comment{isSubmitting && <Spinner />}
+                                            </Button>
+                                        </Flex>
+                                    </Box>
+                                </Flex>
+                            </Flex>
+                        </form>
+                    </>
                 )}
-            </Grid>
+            </Flex>
         </>
     );
 }

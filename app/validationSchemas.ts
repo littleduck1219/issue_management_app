@@ -1,4 +1,4 @@
-import { optional, z } from "zod";
+import { z } from "zod";
 
 export const issueSchema = z.object({
     title: z.string().min(1, "too short").max(255),
@@ -14,4 +14,8 @@ export const patchIssueSchema = z.object({
         .max(255)
         .optional()
         .nullable(),
+});
+
+export const issueCommentSchema = z.object({
+    comment: z.string().min(1).max(65535),
 });

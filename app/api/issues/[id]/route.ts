@@ -6,7 +6,12 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/auth/authOption";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-    const issue = await prisma.issue.findUnique({ where: { id: parseInt(params.id) } });
+    const issue = await prisma.issue.findUnique({
+        where: { id: parseInt(params.id) },
+        include: {
+            issueComments: true,
+        },
+    });
     return NextResponse.json(issue);
 }
 
@@ -22,7 +27,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         return NextResponse.json(validation.error.format(), { status: 400 });
     }
 
-    const { assignedToUserId, title, status, description } = body;
+    const { assignedToUserId, title, status, description, issueComments } = body;
 
     if (assignedToUserId) {
         const user = await prisma.user.findUnique({
@@ -49,6 +54,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
             status,
             description,
             assignedToUserId,
+            issueComments,
         },
     });
 
