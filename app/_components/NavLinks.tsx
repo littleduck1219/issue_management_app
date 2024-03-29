@@ -5,7 +5,7 @@ export function NavLinks() {
     const currentPath = usePathname();
     const links = [
         { label: "Dashboard", href: "/" },
-        { label: "Issues", href: "/issues/list" },
+        { label: "Works", href: "/issues/list" },
     ];
 
     return (
