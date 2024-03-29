@@ -195,27 +195,27 @@
 
 -   Tanstack Query(React Query)의 캐싱기능을 사용하기로 함. Prisma Query를 Tanstack Query로 변경하고 mutation을 사용하여 작업 상태 변경을 하는데 있어, invalidateQueries를 사용하여 작업 성공 시점에 기존 캐시를 무효화하고 새로운 데이터를 업데이트 하게 함
 
-        **결과** : 작업 상태 변경시 즉각적인 데이터 변경이 이루어짐.
+    **결과** : 작업 상태 변경시 즉각적인 데이터 변경이 이루어짐.
 
-        ```tsx
-        const updateIssueStatus = useMutation({
-            mutationKey: ["issue"],
-            mutationFn: async (status: Status) => {
-                return axios.patch(`/api/issues/${issue.id}`, { status });
-            },
+    ```tsx
+    const updateIssueStatus = useMutation({
+        mutationKey: ["issue"],
+        mutationFn: async (status: Status) => {
+            return axios.patch(`/api/issues/${issue.id}`, { status });
+        },
 
-            onSuccess: (data, variables) => {
-                console.log(variables);
-                queryClient.invalidateQueries({ queryKey: ["issue"] });
-            },
-            onError: (error) => {
-                console.error("Error updating issue status:", error);
-            },
-        });
+        onSuccess: (data, variables) => {
+            console.log(variables);
+            queryClient.invalidateQueries({ queryKey: ["issue"] });
+        },
+        onError: (error) => {
+            console.error("Error updating issue status:", error);
+        },
+    });
 
-        const handleStatusChange = (selectedStatus: Status) => {
-            updateIssueStatus.mutate(selectedStatus);
-        };
-        ```
+    const handleStatusChange = (selectedStatus: Status) => {
+        updateIssueStatus.mutate(selectedStatus);
+    };
+    ```
 
     </details>
