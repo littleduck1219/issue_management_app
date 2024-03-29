@@ -7,7 +7,7 @@ import "@radix-ui/themes/styles.css";
 import { Container, Theme, ThemePanel } from "@radix-ui/themes";
 import AuthProvider from "./auth/Provider";
 import QueryClientProvider from "./QueryClientProvider";
-import { LayoutProps } from "@/model/props";
+import { LayoutProps } from "@/app/_model/props";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
