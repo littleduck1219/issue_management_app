@@ -44,7 +44,7 @@
 
 -   Prisma에서 관계형 데이터 모델을 정의하고 Superbase에 연결하여 데이터 베이스를 구축 했습니다.
 
-    ```
+    ```sql
     model Issue {
         id               Int            @id @default(autoincrement())
         title            String         @db.VarChar(255)
@@ -64,28 +64,28 @@
 
 -   Next.js API를 이용 엔드포인트 구축하여 HTTP요청을 처리하여 CRUD를 구현했습니다.
 
-        ```tsx
-        // API
-        export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-            const issue = await prisma.issue.findUnique({
-                where: { id: parseInt(params.id) },
-                include: {
-                    issueComments: true,
-                },
-            });
-            return NextResponse.json(issue);
-        }
-
-        // 요청
-        const { data: issue, isLoading } = useQuery({
-            queryKey: ["issue", params.id],
-            queryFn: async () => {
-                const response = await axios.get(`/api/issues/${params.id}`);
-                return response.data;
+    ```tsx
+    // API
+    export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+        const issue = await prisma.issue.findUnique({
+            where: { id: parseInt(params.id) },
+            include: {
+                issueComments: true,
             },
-            staleTime: 0,
         });
-        ```
+        return NextResponse.json(issue);
+    }
+
+    // 요청
+    const { data: issue, isLoading } = useQuery({
+        queryKey: ["issue", params.id],
+        queryFn: async () => {
+            const response = await axios.get(`/api/issues/${params.id}`);
+            return response.data;
+        },
+        staleTime: 0,
+    });
+    ```
 
 ### 유효성 검사 및 폼 처리를 위해 Zod와 React Hook Form을 결합하여 사용
 
