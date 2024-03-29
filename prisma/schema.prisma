@@ -26,8 +26,6 @@ model Issue {
   userId           String
 
   createdByUser User @relation(name: "createdByUser", fields: [userId], references: [id], onDelete: Cascade)
-
-  // @@index([userId])
 }
 
 enum Status {
